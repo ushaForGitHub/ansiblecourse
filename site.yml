@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates for ubuntu
+    ansible.builtin.apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "ubuntu"
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+  - name: install apache on web servers
+    ansible.builtin.apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "ubuntu"
+
